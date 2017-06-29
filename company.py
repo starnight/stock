@@ -1,7 +1,6 @@
 #!/bin/env python3
 
 import urllib.request
-import io
 
 class CompanyList:
     _url = "http://dts.twse.com.tw/opendata/t187ap03_L.csv"
@@ -18,10 +17,21 @@ class CompanyList:
     def getFeilds(self):
         return self._companies[1]
 
+    def getBreifCompanies(self):
+        feildNames = ["公司代號", "公司名稱", "產業別", "營利事業統一編號"]
+        breif = []
+
+        indices = [self.getFeilds().index(fn) for fn in feildNames]
+
+        for comp in self.getCompanies():
+            breif.append([comp[idx] for idx in indices])
+
+        return breif
+
+
 if __name__ == '__main__':
     complist = CompanyList()
     complist.buildCompList()
-    comps = complist.getCompanies()
+    comps = complist.getBreifCompanies()
     for comp in comps:
         print(comp)
-    print(complist.getFeilds())
